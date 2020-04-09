@@ -4,3 +4,7 @@ In PowerShell:
 
 $env:NODE_ENV="production"
 
+4-NATOURS/.env
+4-NATOURS/server.js
+
+
