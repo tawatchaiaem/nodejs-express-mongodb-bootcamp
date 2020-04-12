@@ -42,12 +42,14 @@ exports.getAllTours = async (req, res) => {
     let queryStr = JSON.stringify(queryObject);
     queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`);
     console.log(JSON.parse(queryStr)); 
+    console.log(JSON.parse(queryStr));
 
 
     const query = Tour.find(JSON.parse(queryStr));
 
     // { difficulty: 'easy', duration: { $gte: 5 } }
     // { difficulty: 'easy', duration: { gte: '5' } }
+        // { difficulty: 'easy', duration: { gte: '5' } }
 
     // EXCUTE QUERY
     
