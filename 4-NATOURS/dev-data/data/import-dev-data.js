@@ -7,7 +7,7 @@ dotenv.config({ path: './.env' });
 const DB = process.env.DATABASE.replace(
   '<PASSWORD>',
   process.env.DATABASE_PASSWORD
-);   
+);
 
 mongoose
   .connect(DB, {
@@ -15,37 +15,45 @@ mongoose
     useCreateIndex: true,
     useFindAndModify: false,
   })
-  .then(() => console.log('DB connection successful!'));
+  .then(() => console.log('DB connection successful!'))
+  .catch((err) => {
+    console.log(err.message);
+  });
 
-  // READ JSON FILE 
-  const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours-simple.json`, 'utf-8'));
+// READ JSON FILE
+const tours = JSON.parse(
+  fs.readFileSync(`${__dirname}/tours-simple.json`, 'utf-8')
+);
 
-  // IMPORT DATA INTO DB
-  const importData = async () => {
-      try{
-        await Tour.create(tours);
-        console.log('Data successfully loaded!');
-        process.exit();
-      }catch(err){
-          console.log(err);
-      }
+// IMPORT DATA INTO DB
+// Command > nodejs .\dev-data\data\import-dev-data.js -importData
+const importData = async () => {
+  try {
+    console.log('loading data ....');
+    await Tour.create(tours);
+    console.log('Data successfully loaded!');
+    process.exit();
+  } catch (err) {
+    console.log(err);
   }
+};
 
-  // DELETE ALL FROM DATA FROM DB
-  const deleteData = async () => {
-    try{
-        await Tour.deleteMany();
-        console.log('Data successfully deleted!');
-        process.exit();
-      }catch(err){
-          console.log(err);
-      }
+// DELETE ALL FROM DATA FROM DB
+// Command > nodejs .\dev-data\data\import-dev-data.js -deleteData
+const deleteData = async () => {
+  try {
+    await Tour.deleteMany();
+    console.log('Data successfully deleted!');
+    process.exit();
+  } catch (err) {
+    console.log(err);
   }
+};
 
-  if(process.argv[2] === '--import'){
-    importData();
-  }else if(process.argv[2] === '--delete'){
-    deleteData();
-  }
+if (process.argv[2] === '--import') {
+  importData();
+} else if (process.argv[2] === '--delete') {
+  deleteData();
+}
 
-  console.log(process.argv);
+console.log(process.argv);
